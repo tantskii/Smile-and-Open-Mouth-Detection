@@ -1,0 +1,5 @@
+md5: 2854f794f3333ed2ba9171ffde371c4d
+outs:
+- cache: true
+  md5: 8879ef78c388e3842a6b686a4aa49e0a.dir
+  path: example_data
