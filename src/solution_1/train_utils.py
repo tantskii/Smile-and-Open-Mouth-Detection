@@ -5,7 +5,11 @@ from keras.callbacks import CSVLogger, EarlyStopping, LearningRateScheduler,\
 
 from .generator import DataGenerator
 
-def create_train_valid_generators(augmentations_pipline, valid_proportion, seed, batch_size=32, shuffle=True):
+def _train_valid_test_split(pathways, labels, ):
+
+
+
+def train_valid_test_generators(augmentations_pipline, valid_proportion, seed, batch_size=32, shuffle=True):
     mtfl_dataset = MTFLDataset('../data/MTFL/',
                                'D:/Repositories/Project/data/AFLW.csv',
                                'D:/Repositories/Project/data/net.csv')

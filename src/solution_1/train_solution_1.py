@@ -1,20 +1,21 @@
 from metrics import f1_score
 from keras.optimizers import Adam
 from .model import create_mobilenetv2
-from .train_utils import create_train_valid_generators, get_augmentations_pipeline, callbacks_factory
+from .train_utils import train_valid_test_generators, get_augmentations_pipeline, callbacks_factory
 
 SEED = 147
 VALID_PROPORTION = 0.1
+TEST_PROPORTION = 0.1
 BATCH_SIZE = 8
 
 
 def train():
     augmentations_pipeline = get_augmentations_pipeline()
     callbacks = callbacks_factory(['best_model_checkpoint, early_stopping'])
-    train_generator, valid_generator = create_train_valid_generators(augmentations_pipeline,
-                                                                     batch_size=BATCH_SIZE,
-                                                                     seed=SEED,
-                                                                     valid_proportion=VALID_PROPORTION)
+    train_generator, valid_generator = train_valid_test_generators(augmentations_pipeline,
+                                                                   batch_size=BATCH_SIZE,
+                                                                   seed=SEED,
+                                                                   valid_proportion=VALID_PROPORTION)
     model = create_mobilenetv2((None, None, 3))
     model.compile(optimizer=Adam(lr=0.001, decay=0.001, amsgrad=True),
                   loss={'smile_output': 'binary_crossentropy',
