@@ -47,7 +47,7 @@ class DataGenerator(Sequence):
         if self.augmentations_pipline:
             batch_x = self.augmentations_pipline.augment_images(batch_x)
 
-        return batch_x / 255., batch_y_smile, batch_y_open_mouth
+        return batch_x / 255., {'smile_output': batch_y_smile, 'open_mouth_output': batch_y_open_mouth}
 
     def _get_pad_shapes(self, image_shapes):
         max_height = max(image_shapes, key=itemgetter(0))[0]

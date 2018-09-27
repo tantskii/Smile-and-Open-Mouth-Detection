@@ -5,7 +5,7 @@ from keras.initializers import he_normal
 from keras.regularizers import l2
 
 
-def create_branch(model_base_output, l2_reg, seed):
+def _create_branch(model_base_output, l2_reg, seed, name):
     branch = Dense(512,
                    activation='relu',
                    use_bias=False,
@@ -18,7 +18,7 @@ def create_branch(model_base_output, l2_reg, seed):
                    kernel_initializer=he_normal(seed),
                    kernel_regularizer=l2(l2_reg)) (branch)
     branch = BatchNormalization() (branch)
-    branch = Dense(1, activation='sigmoid') (branch)
+    branch = Dense(1, activation='sigmoid', name=name) (branch)
 
     return branch
 
@@ -31,8 +31,8 @@ def create_mobilenetv2(input_shape, alpha=1., depth_multiplier=1, l2_reg=0.001, 
                              weights='imagenet',
                              pooling='max')
 
-    smile_branch = create_branch(model_base.output, l2_reg, seed)
-    open_mouth_branch = create_branch(model_base.output, l2_reg, seed)
+    smile_branch = _create_branch(model_base.output, l2_reg, seed, name='smile_output')
+    open_mouth_branch = _create_branch(model_base.output, l2_reg, seed, name='open_mouth_output')
     model = Model(model_base.input, [smile_branch, open_mouth_branch])
 
     return model
