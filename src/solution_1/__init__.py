@@ -1,3 +1,4 @@
-from .train_solution_1 import train
+from .train import train
+from .predict import predict
 
-__all__ = ['train']
+__all__ = ['train', 'predict']

@@ -73,8 +73,8 @@ class MTFLDataset(object):
     def shuffle(self, seed=None):
         pathways_with_labels = list(
             zip(self.image_pathways, self.smile_labels, self.open_mouth_labels))
-        random.seed(seed)
-        random.shuffle(pathways_with_labels)
+
+        random.Random(seed).shuffle(pathways_with_labels)
         self.image_pathways, self.smile_labels, self.open_mouth_labels = map(list,zip(*pathways_with_labels))
 
 

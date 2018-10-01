@@ -1,5 +1,6 @@
 
 from solution_1 import train as train_solution_1
+from solution_1 import predict as predict_solution_1
 
 MODELS_DIR = '../models/'
 PREDICTIONS_DIR = '../predictions/'
@@ -8,14 +9,8 @@ DATA_DIR = '../data/'
 
 
 if __name__ == '__main__':
-    train_solution_1()
-
-
-
-
-
-
-
+    # train_solution_1()
+    predict_solution_1()
 
 
 
