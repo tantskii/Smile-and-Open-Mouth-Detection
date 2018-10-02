@@ -15,10 +15,11 @@ def facemarks_to_coords(facemarks, dtype=np.int):
 
     return coords
 
-def detect_facemarks_coords(image,
-                            bboxes,
-                            facemark_predictor_init=None,
-                            facemarks_data_pathway='../models/shape_predictor_68_face_landmarks.dat'):
+def detect_facemarks_coords(
+        image,
+        bboxes,
+        facemark_predictor_init=None,
+        facemarks_data_pathway='../models/shape_predictor_68_face_landmarks.dat'):
     """
     Detect face landmarks using dlib
     :param image: rgb image
