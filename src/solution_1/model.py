@@ -1,6 +1,6 @@
 from keras.models import Model
 from keras.applications.mobilenetv2 import MobileNetV2
-from keras.layers import Dense, BatchNormalization, Dropout
+from keras.layers import Dense, BatchNormalization
 from keras.initializers import he_normal
 from keras.regularizers import l2
 

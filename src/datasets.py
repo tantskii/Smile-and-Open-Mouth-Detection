@@ -52,10 +52,7 @@ class TestDataset(object):
 
 class MTFLDataset(object):
 
-    def __init__(self,
-                 dataset_dir,
-                 AFLW_labels,
-                 net_labels):
+    def __init__(self,dataset_dir, AFLW_labels, net_labels):
 
         self._AFLW_images_dir = os.path.join(dataset_dir, 'AFLW')
         self._net_images_dir = os.path.join(dataset_dir, 'net_7876')
@@ -130,39 +127,3 @@ class MTFLDataset(object):
                     image_labels[image_name] = label
 
         return image_labels
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

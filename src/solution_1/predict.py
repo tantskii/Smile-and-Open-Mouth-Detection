@@ -1,73 +1,56 @@
 import os
+import time
+import numpy as np
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-import numpy as np
-import matplotlib.pyplot as plt
-from metrics import f1_score
 from keras.utils import CustomObjectScope
 from keras.models import load_model
-from datasets import TestDataset
-from jpeg4py import JPEG
-from sklearn.metrics import f1_score as f1
+from metrics import f1_score
 from tqdm import tqdm
-from face_detector import safe_detect_face_bboxes
 from mtcnn.mtcnn import MTCNN
+from jpeg4py import JPEG
+from face_detector import safe_detect_face_bboxes
 from utils import crop_image
 from scipy.misc import imresize
 
-def predict():
+def predict(args):
+    mtcnn = MTCNN()
+    image_names = os.listdir(args.images_directory)
+    smile_faces = list()
+    open_mouth_faces = list()
+    inference_measurements = list()
+
     with CustomObjectScope({'f1_score': f1_score}):
         model = load_model('../nn_models/best_mobilenetv2_multiclassification.h5')
 
-    test_dataset = TestDataset('../data_test/example_data/example_data')
-    smile_predictions = list(); smile_predictions2 = list()
-    open_mouth_predictions = list(); open_mouth_predictions2 = list()
-
-    mtcnn = MTCNN()
-    for image_pathway in tqdm(test_dataset.image_pathways):
-        image = JPEG(image_pathway).decode()
+    for image_name in tqdm(image_names):
+        image = JPEG(os.path.join(args.images_directory, image_name)).decode()
+        start_time = time.time()
         bboxes = safe_detect_face_bboxes(image, mtcnn)
-        cropped_image = crop_image(image, bboxes.clip(min=0), bbox_number=0)
-        cropped_image = imresize(cropped_image, (192, 192)) / 255.
 
-        predictions = model.predict(np.expand_dims(cropped_image, axis=0))
-        predictions = [float(pred) for pred in predictions]
+        if bboxes.shape[0] == 0:
+            continue
+        else:
+            cropped_image = crop_image(image, bboxes.clip(min=0), bbox_number=0)
+            cropped_image = imresize(cropped_image, (args.height, args.width)) / 255.
+            predictions = model.predict(np.expand_dims(cropped_image, axis=0))
+            inference_measurements.append(time.time() - start_time)
+            predictions = [float(prediction) for prediction in predictions]
 
-        # plt.imshow(cropped_image)
-        # plt.show()
-        # print(predictions)
+            if predictions[0] >= args.smile_prediction_threshold:
+                smile_faces.append(image_name)
 
-        smile_predictions.append(0) if predictions[0] < 0.955 else smile_predictions.append(1) #0.96
-        open_mouth_predictions.append(0) if predictions[1] < 0.5 else open_mouth_predictions.append(1)
+            if predictions[1] >= args.mouth_open_prediction_threshold:
+                open_mouth_faces.append(image_name)
 
-        smile_predictions2.append(predictions[0])
-        open_mouth_predictions2.append(predictions[1])
+    print('\nAverage end to end inference time: {0} sec.'.format(np.round(np.mean(inference_measurements), 3)))
 
+    print('\nIMAGES WITH SMILE')
+    print('-----------------')
+    for image in smile_faces:
+        print('  {0}'.format(image))
 
-    print(f1(test_dataset.smile_labels, smile_predictions))
-    print(f1(test_dataset.open_mouth_labels, open_mouth_predictions))
-
-    a = 4
-
-if __name__ == '__main__':
-    predict()
-
-    # from sklearn.metrics import precision_recall_curve
-    # import matplotlib.pyplot as plt
-    #
-    # prec, rec, tre = precision_recall_curve(test_dataset.smile_labels, smile_predictions)
-    #
-    #
-    # def plot_prec_recall_vs_tresh(precisions, recalls, thresholds):
-    #     plt.plot(thresholds, precisions[:-1], 'b--', label='precision')
-    #     plt.plot(thresholds, recalls[:-1], 'g--', label='recall')
-    #     plt.xlabel('Threshold')
-    #     plt.legend(loc='upper left')
-    #     plt.ylim([0, 1])
-    #
-    #
-    # plot_prec_recall_vs_tresh(prec, rec, tre)
-    # plt.show()
-
-    # 0.6562499999999999
-    # 0.9166666666666667
+    print('\nIMAGES WITH OPEN MOUTH')
+    print('----------------------')
+    for image in open_mouth_faces:
+        print('  {0}'.format(image))

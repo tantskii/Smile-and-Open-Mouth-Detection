@@ -1,30 +1,32 @@
+import dlib
 import numpy as np
 from keras.utils import Sequence
 from jpeg4py import JPEG
-from scipy.misc import imresize
+from sklearn.preprocessing import StandardScaler
+from facemarks_detector import detect_facemarks_coords
 from face_detector import safe_detect_face_bboxes
 from mtcnn.mtcnn import MTCNN
-from utils import crop_image
+from utils import crop_facemarks_coords, resize_facemarks_coords
 
 class DataGenerator(Sequence):
     def __init__(
             self,
             pathways_with_smile_labels,
             pathways_with_open_mouth_labels,
-            augmentations_pipline=None,
-            shape=(256, 256),
+            crop_shape=(100, 100),
             batch_size=32,
             shuffle=True):
 
         self.pathways_with_smile_labels = pathways_with_smile_labels
         self.pathways_with_open_mouth_labels = pathways_with_open_mouth_labels
         self.pathways = sorted(list(pathways_with_smile_labels.keys()))
-        self.augmentations_pipline = augmentations_pipline
-        self.shape=shape
+        self.crop_shape = crop_shape
         self.batch_size = batch_size
         self.shuffle = shuffle
 
+        self.target_facemarks = list(range(17, 27)) + list(range(36, 68))
         self.mtcnn = MTCNN()
+        self.facemark_predictor = dlib.shape_predictor('../models/shape_predictor_68_face_landmarks.dat')
 
         self.on_epoch_end()
 
@@ -44,19 +46,32 @@ class DataGenerator(Sequence):
             if bboxes.shape[0] == 0:
                 continue
             else:
-                cropped_image = crop_image(image, bboxes.clip(min=0), bbox_number=0)
-                batch_x.append(imresize(cropped_image, self.shape))
+                facemarks_coords = detect_facemarks_coords(
+                    image,
+                    bboxes.clip(min=0),
+                    facemark_predictor_init=self.facemark_predictor
+                )
+                cropped_facemarks_coords = crop_facemarks_coords(
+                    facemarks_coords,
+                    bboxes,
+                    bbox_number=0
+                )
+                resized_cropped_facemarks_coords = resize_facemarks_coords(
+                    cropped_facemarks_coords,
+                    original_crop_shape=(bboxes[0][3], bboxes[0][2]),
+                    target_crop_shape=self.crop_shape
+                )
+                face_features = resized_cropped_facemarks_coords[self.target_facemarks, :].ravel()
+                batch_x.append(face_features)
                 batch_y_smile.append(self.pathways_with_smile_labels[pathway])
                 batch_y_open_mouth.append(self.pathways_with_open_mouth_labels[pathway])
 
-        batch_x = np.asarray(batch_x, dtype=np.uint8)
+        batch_x = np.asarray(batch_x)
+        batch_x = StandardScaler().fit_transform(batch_x)
         batch_y_smile = np.asarray(batch_y_smile)
         batch_y_open_mouth = np.asarray(batch_y_open_mouth)
 
-        if self.augmentations_pipline:
-            batch_x = self.augmentations_pipline.augment_images(batch_x)
-
-        return batch_x / 255., {'smile_output': batch_y_smile, 'open_mouth_output': batch_y_open_mouth}
+        return batch_x, {'smile_output': batch_y_smile, 'open_mouth_output': batch_y_open_mouth}
 
     def on_epoch_end(self):
         if self.shuffle:

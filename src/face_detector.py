@@ -3,7 +3,6 @@ import dlib
 import numpy as np
 from mtcnn.mtcnn import MTCNN
 
-
 def detect_face_by_cascade(
         image,
         detector_type,
@@ -78,9 +77,9 @@ def detect_face_by_mtcnn(
 def detect_face_bboxes(
         image,
         detector_type='haarcascade',
-        haarcascade_xml_pathway=r'D:\Repositories\Project\models\haarcascades\haarcascade_frontalface_alt2.xml',
-        lbpcascade_xml_pathway=r'D:\Repositories\Project\models\lbpcascades\lbpcascade_frontalface_improved.xml',
-        cnn_dat_pathway=r'D:\Repositories\Project\models\mmod_human_face_detector.dat',
+        haarcascade_xml_pathway='../models/haarcascades/haarcascade_frontalface_alt2.xml',
+        lbpcascade_xml_pathway='../models/lbpcascades/lbpcascade_frontalface_improved.xml',
+        cnn_dat_pathway='../models/mmod_human_face_detector.dat',
         cascade_scale_factor=1.5,
         cascade_min_neighbors=5,
         dlib_upsample=1,
@@ -116,7 +115,7 @@ def detect_face_bboxes(
         raise ValueError('There is no such detector, available: haarcascade, lbpcascade, hogsvm, cnn, mtcnn')
 
 
-def safe_detect_face_bboxes(image, mtcnn):
+def safe_detect_face_bboxes(image, mtcnn, include_cnn=False):
     bboxes = detect_face_bboxes(image, detector_type='mtcnn', mtcnn_init=mtcnn)
 
     if bboxes.shape[0] == 0:
@@ -125,7 +124,8 @@ def safe_detect_face_bboxes(image, mtcnn):
     if bboxes.shape[0] == 0:
         bboxes = detect_face_bboxes(image, detector_type='haarcascade')
 
-    # if bboxes.shape[0] == 0:
-    #     bboxes = detect_face_bboxes(image, detector_type='cnn')
+    if include_cnn:
+        if bboxes.shape[0] == 0:
+            bboxes = detect_face_bboxes(image, detector_type='cnn')
 
     return bboxes

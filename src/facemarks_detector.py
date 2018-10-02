@@ -9,12 +9,16 @@ def facemarks_to_coords(facemarks, dtype=np.int):
 
     return coords
 
-
 def detect_facemarks_coords(image,
                             bboxes,
-                            facemarks_data_pathway='shape_predictor_68_face_landmarks.dat'):
+                            facemark_predictor_init=None,
+                            facemarks_data_pathway='../models/shape_predictor_68_face_landmarks.dat'):
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    facemarks_predictor = dlib.shape_predictor(facemarks_data_pathway)
+    if facemark_predictor_init:
+        facemarks_predictor = facemark_predictor_init
+    else:
+        facemarks_predictor = dlib.shape_predictor(facemarks_data_pathway)
+
     rectangles = dlib.rectangles()
     rectangles.extend([dlib.rectangle(left=bbox[0],
                                       top=bbox[1],

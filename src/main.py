@@ -1,23 +1,5 @@
 
-from solution_1 import train as train_solution_1
-from solution_1 import predict as predict_solution_1
 
-MODELS_DIR = '../models/'
-PREDICTIONS_DIR = '../predictions/'
-DATA_TEST_DIR = '../data_test/'
-DATA_DIR = '../data/'
+from solution_3 import predict as predict_solution_3
 
-
-if __name__ == '__main__':
-    # train_solution_1()
-    predict_solution_1()
-
-
-
-
-
-
-
-
-
-
+predict_solution_3('D:/Repositories/Project/data_test/example_data/example_data/images', 100, 100)
