@@ -1,0 +1,6 @@
+MetricsNames,Results
+loss,0.3155593814536216
+smile_output_loss,0.362166056244004
+open_mouth_output_loss,0.2112525097669393
+smile_output_f1_score,0.8683281422747566
+open_mouth_output_f1_score,0.9344813366821524
