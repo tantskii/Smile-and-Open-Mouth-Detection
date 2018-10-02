@@ -15,6 +15,15 @@ def _get_optimal_threshold(
         hist_bins=15,
         clip=0.3,
         round_to=3):
+    """
+    Searching optimal threshold at the intersection of two histograms
+    :param data_of_positive_labels: list of data belonging to the positive class
+    :param data_of_negative_labels: list of data belonging to the negative class
+    :param hist_bins: number of bins
+    :param clip: clip by maximum data value
+    :param round_to: round precision
+    :return: optimal threshold
+    """
     data_of_positive_labels = [round(data, round_to) for data in data_of_positive_labels]
     data_of_negative_labels = [round(data, round_to) for data in data_of_negative_labels]
     bins = np.linspace(0, clip, hist_bins, endpoint=True)
@@ -48,6 +57,9 @@ def _get_optimal_threshold(
 
 
 class HeuristicMouthStateDetector(object):
+    """
+    Heuristic model for open mouth detection using the length and height of the mouth
+    """
     def __init__(self, mouth_aspect_ratio_threshold=None):
         self.mouth_aspect_ratio_threshold = mouth_aspect_ratio_threshold
         self.mtcnn = MTCNN()
@@ -56,6 +68,12 @@ class HeuristicMouthStateDetector(object):
         self.predict_inference_measurements = list()
 
     def fit(self, image_pathways, mouth_open_labels):
+        """
+        Optimal threshold searching for images in train set using mouth landmarks
+        :param image_pathways: list of absolute image pathways
+        :param mouth_open_labels: labels
+        :return:
+        """
         if not self.mouth_aspect_ratio_threshold:
             open_mouth_mars = list()
             close_mouth_mars = list()
@@ -86,6 +104,11 @@ class HeuristicMouthStateDetector(object):
             )
 
     def predict(self, image_pathways):
+        """
+        Predict labels on test images by finding threshold
+        :param image_pathways: list of absolute image pathways
+        :return: list with predicted class
+        """
         if self.mouth_aspect_ratio_threshold:
             self.facemark_inference_measurements = list()
             self.predict_inference_measurements = list()
@@ -119,6 +142,11 @@ class HeuristicMouthStateDetector(object):
             raise ValueError('Train or set the mouth_aspect_ratio value')
 
     def _get_mouth_aspect_ratio(self, facemarks_coords):
+        """
+        Mouth aspect ratio calculation with help of height and width of the mouth
+        :param facemarks_coords: face landmraks coordinates
+        :return: mouth aspect ratio
+        """
         mouth_inner_facemarks_coords = facemarks_coords[[60, 62, 64, 66], :]
 
         height = euclidean(mouth_inner_facemarks_coords[1], mouth_inner_facemarks_coords[3])
@@ -129,6 +157,10 @@ class HeuristicMouthStateDetector(object):
 
 
 class HeuristicSmileDetector(object):
+    """
+    Heuristic model for smile detection using the sum of the distances of the points deviating from the straight
+    line of the mouth
+    """
     def __init__(self, smile_deviations_sum_threshold=None):
         self.smile_deviations_sum_threshold = smile_deviations_sum_threshold
         self.mtcnn = MTCNN()
@@ -138,6 +170,12 @@ class HeuristicSmileDetector(object):
         self.predict_inference_measurements = list()
 
     def fit(self, image_pathways, smile_labels):
+        """
+        Optimal threshold searching for images in train set using only lower lip landmarks
+        :param image_pathways: list of absolute image pathways
+        :param mouth_open_labels: labels
+        :return:
+        """
         if not self.smile_deviations_sum_threshold:
             smile_deviations_sum = list()
             not_smile_deviations_sum = list()
@@ -169,6 +207,11 @@ class HeuristicSmileDetector(object):
             )
 
     def predict(self, image_pathways):
+        """
+        Predict labels on test images by finding threshold
+        :param image_pathways: list of absolute image pathways
+        :return: list with predicted class
+        """
         if self.smile_deviations_sum_threshold:
             self.facemark_inference_measurements = list()
             self.predict_inference_measurements = list()
@@ -204,6 +247,12 @@ class HeuristicSmileDetector(object):
 
 
     def _calculate_line_points(self, facemarks_coords, point_pairs):
+        """
+        Сalculation of the average coordinates of the middle line of the lip
+        :param facemarks_coords: face landmraks coordinates
+        :param point_pairs: pairs of upper and lower lip points
+        :return: coordinates of the middle line of the lip
+        """
         line_points = list()
 
         for point_pair in point_pairs:
@@ -212,12 +261,22 @@ class HeuristicSmileDetector(object):
         return np.asarray(line_points, dtype=np.int)
 
     def _normalize_points(self, line_points):
+        """
+        Coordinates normalization
+        :param line_points: coordinates of the line
+        :return: normalized coordinates of the line
+        """
         row_sums = line_points.sum(axis=0)
         line_points = line_points / row_sums
 
         return line_points
 
     def _get_deviations_sum(self, line_points):
+        """
+        Sum of the distances calculation of the points deviating from the straight
+        :param line_points: coordinates of the line
+        :return: sum
+        """
         line_points = self._normalize_points(line_points)
         dist = line_points[4] - line_points[0]
         deviations_sum = 0

@@ -10,7 +10,16 @@ def train_valid_test_generators(
         crop_shape,
         batch_size=32,
         shuffle=True):
-
+    """
+    Create train, valid and test keras sequence generators
+    :param valid_proportion: validation fraction
+    :param test_proportion: test fraction
+    :param seed: random state
+    :param crop_shape: target shape of cropped images with face
+    :param batch_size: size of batches
+    :param shuffle: shuffle image pathways before epochs
+    :return: generators dict
+    """
     mtfl_dataset = MTFLDataset(
         '../data/MTFL/',
         '../data/AFLW.csv',

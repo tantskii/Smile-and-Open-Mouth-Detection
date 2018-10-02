@@ -11,6 +11,17 @@ from .model import create_mobilenetv2, freeze_model, unfreeze_model
 from .train_utils import train_valid_test_generators
 
 def train_pipeline(model, train_generator, valid_generator, callbacks, optimizer_lr, optimizer_decay, epochs):
+    """
+    Model compilation and training with the given parameters
+    :param model: keras model
+    :param train_generator: sequence keras generator with training images
+    :param valid_generator: sequence keras generator with valid images
+    :param callbacks: list of keras callbacks
+    :param optimizer_lr: float learning rate
+    :param optimizer_decay: float decay
+    :param epochs: number of epochs
+    :return: trained model
+    """
     model.compile(
         optimizer=Adam(
             lr=optimizer_lr,
@@ -39,7 +50,13 @@ def train_pipeline(model, train_generator, valid_generator, callbacks, optimizer
     return model
 
 def train(args):
-
+    """
+    Train MobileNetv2 for multiclassification task with two outputs for smile and mouth open detection. Training in
+    two stages: training with freezed convolutions layers until global max pooling using hard augmentations and then
+    training a completely unfreezed model using easy augmentations.
+    :param args: argparse arguments
+    :return: save test evaluation results in logs
+    """
     print('Create generators')
     generators = train_valid_test_generators(
         valid_proportion=args.valid_proportion,

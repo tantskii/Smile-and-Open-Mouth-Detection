@@ -14,6 +14,11 @@ from utils import crop_image
 from scipy.misc import imresize
 
 def predict(args):
+    """
+    Solution 1 prediction script for directory with images for smile and open mouth detection
+    :param args: argparse arguments
+    :return: prints inference measured time and two lists of images that have passed the filter
+    """
     mtcnn = MTCNN()
     image_names = os.listdir(args.images_directory)
     smile_faces = list()

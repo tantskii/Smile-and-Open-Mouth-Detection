@@ -7,6 +7,9 @@ from mtcnn.mtcnn import MTCNN
 from utils import crop_image
 
 class DataGenerator(Sequence):
+    """
+    Keras sequence multithreaded data generator
+    """
     def __init__(
             self,
             pathways_with_smile_labels,
@@ -29,9 +32,18 @@ class DataGenerator(Sequence):
         self.on_epoch_end()
 
     def __len__(self):
+        """
+        Calculate number of batches
+        :return: number of batches
+        """
         return int(np.ceil(len(self.pathways) / float(self.batch_size)))
 
     def __getitem__(self, index):
+        """
+        Batch creation by index. Сuts part with the face for each image and apply augmentations
+        :param index: batch index
+        :return: batch with cropped images and labels
+        """
         batch_pathways = self.pathways[index * self.batch_size: (index + 1) * self.batch_size]
         batch_x = list()
         batch_y_smile = list()
@@ -59,5 +71,9 @@ class DataGenerator(Sequence):
         return batch_x / 255., {'smile_output': batch_y_smile, 'open_mouth_output': batch_y_open_mouth}
 
     def on_epoch_end(self):
+        """
+        Shuffle image pathways at the end of each epoch
+        :return:
+        """
         if self.shuffle:
             np.random.shuffle(self.pathways)

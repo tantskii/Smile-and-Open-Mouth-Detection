@@ -5,7 +5,11 @@ from utils import train_valid_test_split
 from .generator import DataGenerator
 
 def _get_augmentations_pipeline(mode='easy'):
-
+    """
+    Create augmentation pipeline with different complexity
+    :param mode: name of mode
+    :return: selected augmentations pipeline
+    """
     if mode == 'hard':
         augmentations_pipline = iaa.Sequential([
             iaa.Sometimes(0.8, iaa.OneOf([
@@ -46,7 +50,16 @@ def train_valid_test_generators(
         shape,
         batch_size=32,
         shuffle=True):
-
+    """
+    Create train, valid and test keras sequence generators
+    :param valid_proportion: validation fraction
+    :param test_proportion: test fraction
+    :param seed: random state
+    :param shape: target shape of cropped images with face
+    :param batch_size: size of batches
+    :param shuffle: shuffle image pathways before epochs
+    :return: generators dict
+    """
     mtfl_dataset = MTFLDataset(
         '../data/MTFL/',
         '../data/AFLW.csv',

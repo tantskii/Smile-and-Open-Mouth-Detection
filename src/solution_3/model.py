@@ -4,6 +4,14 @@ from keras.initializers import he_normal
 from keras.regularizers import l2
 
 def _create_branch(model_base_output, l2_reg, seed, name):
+    """
+    Сreating one of two branches for multitask classification after base fully connected layers
+    :param model_base_output: output after base layers
+    :param l2_reg: float l2 regularization
+    :param seed: random state
+    :param name: name of the branch ouput
+    :return: keras layers
+    """
     branch = Dense(
         30,
         activation='relu',
@@ -29,6 +37,15 @@ def _create_branch(model_base_output, l2_reg, seed, name):
     return branch
 
 def create_mlp_model(l2_reg=0.001, seed=None):
+    """
+    Multi layer perceptron creation with two outputs
+    :param input_shape: input image shape
+    :param alpha: mobilenet width (channels) multiplier
+    :param depth_multiplier: mobilenet depth (height and width of feature maps) multiplie
+    :param l2_reg: l2 regularization
+    :param seed: random state
+    :return: keras model
+    """
     input = Input(shape=(84,))
     fc1 = Dense(
         60,

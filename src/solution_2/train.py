@@ -7,6 +7,12 @@ from .heuristic_models import HeuristicMouthStateDetector, HeuristicSmileDetecto
 warnings.filterwarnings('ignore')
 
 def get_train_test(test_proportion, seed):
+    """
+    Simple holdout creation
+    :param test_proportion: fraction of test
+    :param seed: random state
+    :return: dict of train and test datasets
+    """
     mtfl_dataset = MTFLDataset(
         '../data/MTFL/',
         '../data/AFLW.csv',
@@ -27,6 +33,11 @@ def get_train_test(test_proportion, seed):
     return train_test_datasets
 
 def train(args):
+    """
+    Finding the optimal threshold for each of the two models on the training dataset
+    :param args: argparse arguments
+    :return: save test evaluation results in logs
+    """
     print('Create datasets')
     train_test_datasets = get_train_test(args.test_proportion, args.seed)
 

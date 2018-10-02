@@ -6,11 +6,24 @@ from keras.callbacks import LearningRateScheduler
 from keras.callbacks import TensorBoard, CSVLogger
 
 def get_absolute_file_pathways(directory):
+    """
+    Getting full image pathways
+    :param directory: directory pathway
+    :return: list of iamge pathways
+    """
     file_names = os.listdir(directory)
 
     return [os.path.join(directory, file_name) for file_name in file_names]
 
 def crop_image(image, bboxes, bbox_number=0, padding=0):
+    """
+    Crop face from image by bounding box
+    :param image: rgb image
+    :param bboxes: bounding boxes
+    :param bbox_number: first face bounding box
+    :param padding: padding
+    :return: cropped image
+    """
     crop_image = image[
                  bboxes[bbox_number][1]-padding : bboxes[bbox_number][1]+bboxes[bbox_number][3]+padding,
                  bboxes[bbox_number][0]-padding : bboxes[bbox_number][0]+bboxes[bbox_number][2]+padding,
@@ -19,11 +32,24 @@ def crop_image(image, bboxes, bbox_number=0, padding=0):
     return crop_image
 
 def imresize_with_proportion(image, target_height):
+    """
+    Resizing with preservation of proportions
+    :param image: rgb image
+    :param target_height: target height of new image
+    :return: resized image
+    """
     fraction = target_height / image.shape[0]
 
     return imresize(image, fraction)
 
 def crop_facemarks_coords(facemarks_coords, bboxes, bbox_number=0):
+    """
+    Offset face landmarks to zero coordinates
+    :param facemarks_coords: face landmarks coordinates
+    :param bboxes: bounding boxes
+    :param bbox_number: first face bounding box
+    :return: face landmarks with new coordinates
+    """
     facemarks_coords = facemarks_coords.copy()
     facemarks_coords[bbox_number][:, 0] = facemarks_coords[bbox_number][:, 0] - bboxes[bbox_number][0]
     facemarks_coords[bbox_number][:, 1] = facemarks_coords[bbox_number][:, 1] - bboxes[bbox_number][1]
@@ -31,6 +57,13 @@ def crop_facemarks_coords(facemarks_coords, bboxes, bbox_number=0):
     return facemarks_coords[bbox_number]
 
 def resize_facemarks_coords(face_facemarks_coords, original_crop_shape, target_crop_shape):
+    """
+    Resize face landmarks
+    :param face_facemarks_coords: face landmarks coordinates
+    :param original_crop_shape: original cropped image with face shape
+    :param target_crop_shape: target cropped image with face shape
+    :return:
+    """
     face_facemarks_coords = face_facemarks_coords.copy()
     face_facemarks_coords[:, 0] = face_facemarks_coords[:, 0] * (target_crop_shape[1] / original_crop_shape[1])
     face_facemarks_coords[:, 1] = face_facemarks_coords[:, 1] * (target_crop_shape[0] / original_crop_shape[0])
@@ -38,6 +71,14 @@ def resize_facemarks_coords(face_facemarks_coords, original_crop_shape, target_c
     return face_facemarks_coords
 
 def train_valid_test_split(pathways, labels, valid_len, test_len):
+    """
+    Simple holdout splitting
+    :param pathways: image pathways
+    :param labels: labels with classes
+    :param valid_len: validation lenght
+    :param test_len: test lenght
+    :return: dictionaries
+    """
     valid_test_len = valid_len + test_len
 
     train_pathways_with_labels = dict(
@@ -62,6 +103,12 @@ def train_valid_test_split(pathways, labels, valid_len, test_len):
     return (train_pathways_with_labels, valid_pathways_with_labels, test_pathways_with_labels)
 
 def callbacks_factory(callbacks_list, model_mask):
+    """
+    Keras callbacks list creating
+    :param callbacks_list: selected callbacks
+    :param model_mask: mask for files
+    :return:
+    """
     callbacks = list()
 
     if 'best_model_checkpoint' in callbacks_list:

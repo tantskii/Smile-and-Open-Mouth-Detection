@@ -16,6 +16,11 @@ from facemarks_detector import detect_facemarks_coords
 from utils import crop_facemarks_coords, resize_facemarks_coords
 
 def predict(args):
+    """
+    Solution 3 prediction script for directory with images for smile and open mouth detection
+    :param args: argparse arguments
+    :return: prints inference measured time and two lists of images that have passed the filter
+    """
     smile_faces = list()
     open_mouth_faces = list()
     facemark_inference_measurements = list()

@@ -11,7 +11,11 @@ from .train_utils import train_valid_test_generators
 from .model import create_mlp_model
 
 def train(args):
-
+    """
+    Train multi layer perceptron for multiclassification task with two outputs for smile and mouth open detection.
+    :param args: argparse arguments
+    :return: save test evaluation results in logs
+    """
     print('Create generators')
     generators = train_valid_test_generators(
         valid_proportion=args.valid_proportion,

@@ -9,6 +9,9 @@ from mtcnn.mtcnn import MTCNN
 from utils import crop_facemarks_coords, resize_facemarks_coords
 
 class DataGenerator(Sequence):
+    """
+    Keras sequence multithreaded data generator
+    """
     def __init__(
             self,
             pathways_with_smile_labels,
@@ -31,9 +34,18 @@ class DataGenerator(Sequence):
         self.on_epoch_end()
 
     def __len__(self):
+        """
+        Calculate number of batches
+        :return: number of batches
+        """
         return int(np.ceil(len(self.pathways) / float(self.batch_size)))
 
     def __getitem__(self, index):
+        """
+        Batch creation by index. Find face landmarks mouth, eye and eyebrows and turns them into a feature vector
+        :param index: batch index
+        :return: batch with face features and labels
+        """
         batch_pathways = self.pathways[index * self.batch_size: (index + 1) * self.batch_size]
         batch_x = list()
         batch_y_smile = list()
@@ -74,5 +86,9 @@ class DataGenerator(Sequence):
         return batch_x, {'smile_output': batch_y_smile, 'open_mouth_output': batch_y_open_mouth}
 
     def on_epoch_end(self):
+        """
+        Shuffle image pathways at the end of each epoch
+        :return:
+        """
         if self.shuffle:
             np.random.shuffle(self.pathways)

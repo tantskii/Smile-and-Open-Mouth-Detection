@@ -6,7 +6,9 @@ from operator import itemgetter
 from utils import get_absolute_file_pathways
 
 class TestDataset(object):
-
+    """
+    MULTI-PIE dataset
+    """
     def __init__(self, dataset_dir):
         self._images_dir = os.path.join(dataset_dir, 'images')
         self._landmarks_dir = os.path.join(dataset_dir, 'landmarks')
@@ -19,9 +21,17 @@ class TestDataset(object):
         self._init_open_mouth_labels()
 
     def _init_image_pathways(self):
+        """
+        Get absolute image pathways
+        :return:
+        """
         self.image_pathways = get_absolute_file_pathways(self._images_dir)
 
     def _init_landmarks(self):
+        """
+        Face landmarks preprocessing
+        :return:
+        """
         self.landmarks = list()
 
         for image_landmarks_pathway in get_absolute_file_pathways(self._landmarks_dir):
@@ -32,12 +42,25 @@ class TestDataset(object):
                 self.landmarks.append(landmarks_coords)
 
     def _init_open_mouth_labels(self):
+        """
+        Open mouth labels preprocessing
+        :return:
+        """
         self.open_mouth_labels = self.__return_labels(self._open_mouth_dir)
 
     def _init_smile_labels(self):
+        """
+        Smile labels preprocessing
+        :return:
+        """
         self.smile_labels = self.__return_labels(self._smile_dir)
 
     def __return_labels(self, directory):
+        """
+        Convert directory image to labels
+        :param directory:
+        :return:
+        """
         labels = list()
         target_image_names = os.listdir(directory)
 
@@ -51,7 +74,9 @@ class TestDataset(object):
 
 
 class MTFLDataset(object):
-
+    """
+    Multi-Task Facial Landmarks dataset
+    """
     def __init__(self,dataset_dir, AFLW_labels, net_labels):
 
         self._AFLW_images_dir = os.path.join(dataset_dir, 'AFLW')
@@ -68,6 +93,11 @@ class MTFLDataset(object):
         self._init_open_mouth_labels()
 
     def shuffle(self, seed=None):
+        """
+        Shuffle the dataset
+        :param seed: random state
+        :return:
+        """
         pathways_with_labels = list(
             zip(self.image_pathways, self.smile_labels, self.open_mouth_labels))
 
@@ -76,6 +106,10 @@ class MTFLDataset(object):
 
 
     def _init_image_pathways(self):
+        """
+        Get absolute image pathways which has labels in txt files
+        :return:
+        """
         image_pathways = get_absolute_file_pathways(self._AFLW_images_dir) + get_absolute_file_pathways(self._net_images_dir)
         image_names = [image_pathway.split('\\')[1] for image_pathway in image_pathways]
 
@@ -90,6 +124,10 @@ class MTFLDataset(object):
         self.image_pathways = itemgetter(*correct_image_pathways_indices)(image_pathways)
 
     def _init_smile_labels(self):
+        """
+        Smile labels preprocessing
+        :return:
+        """
         training_image_labels = self.__parse_txt(self._training)
         testing_image_labels = self.__parse_txt(self._testing)
         image_labels = dict(chain.from_iterable(d.items() for d in (training_image_labels, testing_image_labels)))
@@ -97,6 +135,10 @@ class MTFLDataset(object):
         self.smile_labels = self.__return_labels(image_labels)
 
     def _init_open_mouth_labels(self):
+        """
+        Open mouth labels preprocessing
+        :return:
+        """
         open_mouth_labels = pd.concat([self._AFLW_open_mouth_labels, self._net_open_mouth_labels])
         open_mouth_labels['Label'] = open_mouth_labels['Label'].map({1: 1, 2: 0})
         image_labels = pd.Series(open_mouth_labels['Label'].values,
@@ -105,6 +147,11 @@ class MTFLDataset(object):
         self.open_mouth_labels = self.__return_labels(image_labels)
 
     def __return_labels(self, image_labels):
+        """
+        Convert to labels
+        :param image_labels: labels
+        :return: labels
+        """
         labels = list()
 
         for image_pathway in self.image_pathways:
@@ -114,6 +161,11 @@ class MTFLDataset(object):
         return labels
 
     def __parse_txt(self, pathway):
+        """
+        Parse txt file with data
+        :param pathway: pathway to txt file
+        :return: labels
+        """
         image_labels = dict()
 
         with open(pathway, 'r') as file_stream:

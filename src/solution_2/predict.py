@@ -4,6 +4,12 @@ from utils import get_absolute_file_pathways
 from .heuristic_models import HeuristicSmileDetector, HeuristicMouthStateDetector
 
 def predict_separately(model, image_pathways):
+    """
+    Prediction for each model separately
+    :param model: heuristic model
+    :param image_pathways: list of absolute image pathways
+    :return: name of images that have passed the filter
+    """
     predictions = model.predict(image_pathways)
     image_pathways = np.asarray(image_pathways)
     predicted_image_pathways = image_pathways[np.where(predictions == 1)].tolist()
@@ -22,6 +28,11 @@ def predict_separately(model, image_pathways):
 
 
 def predict(args):
+    """
+    Solution 2 prediction script for directory with images for smile and open mouth detection
+    :param args: argparse arguments
+    :return: prints inference measured time and two lists of images that have passed the filter
+    """
     image_pathways = get_absolute_file_pathways(args.images_directory)
     with open('../models/heuristic_models.json') as in_file:
         thresholds = json.load(in_file)
