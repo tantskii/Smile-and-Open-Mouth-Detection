@@ -1,4 +1,5 @@
-**Smile and Open Mouth Detection**
+Smile and Open Mouth Detection
+============
 
 * **Solutions**:
     * *solution 1*: end2end solution based on multitask MobileNetv2
@@ -10,9 +11,9 @@
     * [*mtcnn*](https://github.com/ipazc/mtcnn) - face detection
     * [*imgaug*](https://imgaug.readthedocs.io/en/latest/index.html) - image augmentations
 
-* For training it was used only [Multi-Task Facial Landmark (MTFL) dataset](http://mmlab.ie.cuhk.edu.hk/projects/TCDCN.html) with own labels for open mouth *(AFLW.csv and net.csv)*. It's necessary to place it in the *data* folder *(../data/MTFL/)*
-* MULTI-PIE must be unpacked in the *data_test* folder
-* Scripts for training and inference lie in the *scripts* folder, there you can specify your image folder for prediction.
+* For training it was used only [Multi-Task Facial Landmark (MTFL) dataset](http://mmlab.ie.cuhk.edu.hk/projects/TCDCN.html) with own labels for open mouth (`AFLW.csv` and `net.csv`). It's necessary to place it in the `data` folder (`../data/MTFL/`)
+* MULTI-PIE must be unpacked in the `data_test` folder
+* Scripts for training and inference lie in the `scripts` folder, there you can specify your image folder for prediction.
 * **MTFL test set f1 score**:
     * *solution 1*: smile - 0.87, open mouth - 0.93
     * *solution 2*: smile - 0.79, open mouth - 0.82
