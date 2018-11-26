@@ -86,3 +86,4 @@ READY TO USE SOLUTIONS
 	https://github.com/CMU-Perceptual-Computing-Lab/openpose
 	https://github.com/zeusees/FaceBoxes
 	https://github.com/szad670401/Fast-MTCNN https://opendatascience.slack.com/archives/C04655480/p1538836823000100
+	https://github.com/TropComplique/FaceBoxes-tensorflow
