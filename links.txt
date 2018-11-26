@@ -1,5 +1,4 @@
-﻿NEURAL NETWORKS
-
+NEURAL NETWORKS
 	https://towardsdatascience.com/mtcnn-face-detection-cdcb20448ce0
 	https://github.com/kpzhang93/MTCNN_face_detection_alignment
 	http://flothesof.github.io/convnet-face-keypoint-detection.html
@@ -13,13 +12,13 @@
 	http://openaccess.thecvf.com/content_cvpr_2018/html/Feng_Wing_Loss_for_CVPR_2018_paper.html
 	https://habr.com/company/intel/blog/333612/
 
+
 OPENCV DLIB
 	https://www.pyimagesearch.com/2017/04/10/detect-eyes-nose-lips-jaw-dlib-opencv-python/  ---EAR
 	https://www.pyimagesearch.com/2018/04/02/faster-facial-landmark-detector-with-dlib/   
 
-DATASETS
- (facial expressions)
 
+DATASETS
 	http://mmlab.ie.cuhk.edu.hk/projects/TCDCN.html                                               --- лица c 5 landmarks и классом smile/not smile
 	http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html                                              --- лица c 5 landmarks и классом smile/not smile
 	HELEN http://www.ifp.illinois.edu/~vuongle2/helen/                                            --- просто лица с lms
@@ -32,15 +31,13 @@ DATASETS
 	facewarehouse 					                                              --- не скачать
 	http://www.cs.cmu.edu/afs/cs/project/PIE/MultiPie/Multi-Pie/Home.html                         --- не скачать
 
-	
-
 	https://www.kairos.com/blog/60-facial-recognition-databases
 	https://facedetection.com/datasets/
 	https://www.tugraz.at/institute/icg/research/team-bischof/lrs/downloads/aflw/
 	https://en.wikipedia.org/wiki/Facial_expression_databases
 
-KAGGLE DATASETS, COMPETITIONS, KERNELS
 
+KAGGLE DATASETS, COMPETITIONS, KERNELS
 	https://www.kaggle.com/c/predict-facial-landmarks2
 	https://www.kaggle.com/drgilermo/face-images-with-marked-landmark-points
 	https://www.kaggle.com/selfishgene/youtube-faces-with-facial-keypoints
@@ -52,24 +49,22 @@ KAGGLE DATASETS, COMPETITIONS, KERNELS
 	https://www.kaggle.com/c/facial-keypoint-detection
 	https://www.kaggle.com/jessicali9530/celeba-dataset/home
 
+
 OPEN CLOSE
-	https://www.researchgate.net/publication/318715291_Real-Time_Facial_Expression_Recognition_App_Development_on_Smart_Phones  ---
-	
-SVM
+	https://www.researchgate.net/publication/318715291_Real-Time_Facial_Expression_Recognition_App_Development_on_Smart_Phones --SVM
 	http://ir.ia.ac.cn/handle/173211/19843  ---SVM
 	http://baillement.com/dossier/hypovigilance-caplier.pdf  ---spectral analysis
 	https://hal.archives-ouvertes.fr/hal-00372148/document   ---spectral analysis
 	https://upcommons.upc.edu/bitstream/handle/2117/88341/gonzalo.lopez_103365.pdf?sequence=1&isAllowed=y ---MAR
-								 					      ---MAR
 	https://www.spiedigitallibrary.org/journals/journal-of-electronic-imaging/volume-27/issue-05/051205/Eye-and-mouth-state-detection-algorithm-based-on-contour-feature/10.1117/1.JEI.27.5.051205.full?SSO=1
 	http://splab.cz/wp-content/uploads/2013/11/Emotional-Load-Detection-based-on-the-mouth-opening.pdf    ---morphology
 	https://www.pyimagesearch.com/2017/05/08/drowsiness-detection-opencv/
 
+
 SMILE
 	https://www.csie.ntu.edu.tw/~fuh/personal/FaceDetectionandSmileDetection.pdf ---EVRISTIC
 	https://arxiv.org/pdf/1802.02185.pdf  ---CNN
- https://www.researchgate.net/publication/312056338_Spontaneous_Smile_Detection_with_Application_of_Landmark_Points_Supported_by_Visual_Indications
-
+	https://www.researchgate.net/publication/312056338_Spontaneous_Smile_Detection_with_Application_of_Landmark_Points_Supported_by_Visual_Indications
 	https://arxiv.org/pdf/1603.09129.pdf
 	https://medium.freecodecamp.org/smilfie-auto-capture-selfies-by-detecting-a-smile-using-opencv-and-python-8c5cfb6ec197
 	http://www.paulvangent.com/2016/08/05/emotion-recognition-using-facial-landmarks/
@@ -81,12 +76,13 @@ SMILE
 	https://web.stanford.edu/~zollhoef/papers/EG18_FaceSTAR/page.html
 	https://www.researchgate.net/figure/Facial-landmarks-and-COG-using-CK-dataset_fig2_318715291
 
+
 READY TO USE SOLUTIONS 
- https://pythonhosted.org/bob.ip.flandmark/guide.html 
- https://www.menpo.org/menpofit/
- https://github.com/ageitgey/face_recognition
- https://github.com/TadasBaltrusaitis/OpenFace
- https://github.com/iperov/DeepFaceLab
- https://github.com/CMU-Perceptual-Computing-Lab/openpose
- https://github.com/zeusees/FaceBoxes
- https://github.com/szad670401/Fast-MTCNN https://opendatascience.slack.com/archives/C04655480/p1538836823000100
+	https://pythonhosted.org/bob.ip.flandmark/guide.html 
+	https://www.menpo.org/menpofit/
+	https://github.com/ageitgey/face_recognition
+	https://github.com/TadasBaltrusaitis/OpenFace
+	https://github.com/iperov/DeepFaceLab
+	https://github.com/CMU-Perceptual-Computing-Lab/openpose
+	https://github.com/zeusees/FaceBoxes
+	https://github.com/szad670401/Fast-MTCNN https://opendatascience.slack.com/archives/C04655480/p1538836823000100
