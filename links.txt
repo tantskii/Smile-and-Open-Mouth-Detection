@@ -11,8 +11,7 @@
 	https://dp.readthedocs.io/en/latest/facialkeypointstutorial/index.html
 	http://cs231n.stanford.edu/reports/2016/pdfs/007_Report.pdf
 	http://openaccess.thecvf.com/content_cvpr_2018/html/Feng_Wing_Loss_for_CVPR_2018_paper.html
-	https://github.com/zeusees/FaceBoxes
-	https://github.com/szad670401/Fast-MTCNN https://opendatascience.slack.com/archives/C04655480/p1538836823000100
+	https://habr.com/company/intel/blog/333612/
 
 OPENCV DLIB
 	https://www.pyimagesearch.com/2017/04/10/detect-eyes-nose-lips-jaw-dlib-opencv-python/  ---EAR
@@ -64,6 +63,7 @@ SVM
 								 					      ---MAR
 	https://www.spiedigitallibrary.org/journals/journal-of-electronic-imaging/volume-27/issue-05/051205/Eye-and-mouth-state-detection-algorithm-based-on-contour-feature/10.1117/1.JEI.27.5.051205.full?SSO=1
 	http://splab.cz/wp-content/uploads/2013/11/Emotional-Load-Detection-based-on-the-mouth-opening.pdf    ---morphology
+	https://www.pyimagesearch.com/2017/05/08/drowsiness-detection-opencv/
 
 SMILE
 	https://www.csie.ntu.edu.tw/~fuh/personal/FaceDetectionandSmileDetection.pdf ---EVRISTIC
@@ -81,12 +81,12 @@ SMILE
 	https://web.stanford.edu/~zollhoef/papers/EG18_FaceSTAR/page.html
 	https://www.researchgate.net/figure/Facial-landmarks-and-COG-using-CK-dataset_fig2_318715291
 
-ГОТОВЫЕ РЕШЕНИЯ 
+READY TO USE SOLUTIONS 
  https://pythonhosted.org/bob.ip.flandmark/guide.html 
  https://www.menpo.org/menpofit/
  https://github.com/ageitgey/face_recognition
  https://github.com/TadasBaltrusaitis/OpenFace
  https://github.com/iperov/DeepFaceLab
  https://github.com/CMU-Perceptual-Computing-Lab/openpose
-https://www.pyimagesearch.com/2017/05/08/drowsiness-detection-opencv/ детекция закрытого и открытого рта
-https://habr.com/company/intel/blog/333612/                           использованеи сеток в opencv на CPU
+ https://github.com/zeusees/FaceBoxes
+ https://github.com/szad670401/Fast-MTCNN https://opendatascience.slack.com/archives/C04655480/p1538836823000100
